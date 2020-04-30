@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/emirpasic/gods v1.12.0 // indirect
+	github.com/gogf/gf v1.12.2 // indirect
 	github.com/gorilla/mux v1.7.4 // indirect
 	github.com/kamildrazkiewicz/go-flow v0.0.0-20170919072006-2a1d885f8ce4 // indirect
 	github.com/qiniu/api.v7 v7.2.5+incompatible // indirect
