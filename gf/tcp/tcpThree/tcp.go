@@ -5,8 +5,7 @@ import (
 	"time"
 
 	"github.com/gogf/gf/os/glog"
-
-	"github.com/gogf/gf/util/gconv"
+	"github.com/gogf/gf/os/gtime"
 
 	"github.com/gogf/gf/net/gtcp"
 )
@@ -18,7 +17,9 @@ func main() {
 		for {
 			data, err := conn.Recv(-1)
 			if len(data) > 0 {
-				fmt.Println(string(data))
+				if err := conn.Send(append([]byte("> "), data...)); err != nil {
+					fmt.Println(err)
+				}
 			}
 			if err != nil {
 				break
@@ -29,12 +30,15 @@ func main() {
 	time.Sleep(time.Second)
 
 	// Client
-	conn, err := gtcp.NewConn("127.0.0.1:8199")
-	if err != nil {
-		panic(err)
-	}
-	for i := 0; i < 10000; i++ {
-		if err := conn.Send([]byte(gconv.String(i))); err != nil {
+	for {
+		if conn, err := gtcp.NewConn("127.0.0.1:8199"); err == nil {
+			if b, err := conn.SendRecv([]byte(gtime.Datetime()), -1); err == nil {
+				fmt.Println(string(b), conn.LocalAddr(), conn.RemoteAddr())
+			} else {
+				fmt.Println(err)
+			}
+			conn.Close()
+		} else {
 			glog.Error(err)
 		}
 		time.Sleep(time.Second)
