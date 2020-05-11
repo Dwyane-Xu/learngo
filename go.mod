@@ -13,5 +13,6 @@ require (
 	github.com/willf/bitset v1.1.10
 	github.com/willf/bloom v2.0.3+incompatible
 	golang.org/x/net v0.0.0-20200301022130-244492dfa37a
+	gopl.io v0.0.0-20200323155855-65c318dde95e // indirect
 	qiniupkg.com/x v7.0.8+incompatible
 )
