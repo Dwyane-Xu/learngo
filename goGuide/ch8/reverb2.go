@@ -11,6 +11,7 @@ import (
 )
 
 func handleReverb2Conn(c net.Conn) {
+	c.Close()
 	input := bufio.NewScanner(c)
 	var wg sync.WaitGroup
 	for input.Scan() {
