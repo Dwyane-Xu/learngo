@@ -12,7 +12,3 @@ func numTrees(n int) int {
 	}
 	return dp[n]
 }
-
-func main() {
-
-}

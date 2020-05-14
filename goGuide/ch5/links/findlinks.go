@@ -1,8 +1,7 @@
-package main
+package links
 
 import (
 	"fmt"
-	"learngo/goGuide/ch5/links"
 	"log"
 )
 
@@ -20,15 +19,11 @@ func breadthFirst(f func(item string) []string, worklist []string) {
 	}
 }
 
-func crwal(url string) []string {
+func Crwal(url string) []string {
 	fmt.Println(url)
-	list, err := links.Extract(url)
+	list, err := Extract(url)
 	if err != nil {
 		log.Print(err)
 	}
 	return list
-}
-
-func main() {
-	breadthFirst(crwal, []string{"https://www.qq.com/"})
 }
