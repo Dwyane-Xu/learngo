@@ -14,6 +14,7 @@ func main() {
 	PrintFile("large.out")
 }
 
+// WriteToFile 将结果写到文件中
 func WriteToFile(p <-chan int, filename string) {
 	file, err := os.Create(filename)
 	if err != nil {
@@ -27,6 +28,7 @@ func WriteToFile(p <-chan int, filename string) {
 	pipeline.WriterSink(writer, p)
 }
 
+// PrintFile 打印结果
 func PrintFile(filename string) {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -45,8 +47,9 @@ func PrintFile(filename string) {
 	}
 }
 
-func CreatePipeline(filename string,
-	fileSize, chunkCount int) <-chan int {
+// CreatePipeline 首先拆分文件，读取多个文件块到多个channel中，然后进行归并排序
+// 返回归并排序的结果channel
+func CreatePipeline(filename string, fileSize, chunkCount int) <-chan int {
 	chunkSize := fileSize / chunkCount
 	pipeline.Init()
 
@@ -67,8 +70,7 @@ func CreatePipeline(filename string,
 	return pipeline.MergeN(sortResults...)
 }
 
-func CreateNetworkPipeline(filename string,
-	fileSize, chunkCount int) <-chan int {
+func CreateNetworkPipeline(filename string, fileSize, chunkCount int) <-chan int {
 	chunkSize := fileSize / chunkCount
 	pipeline.Init()
 

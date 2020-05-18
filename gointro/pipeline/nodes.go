@@ -11,10 +11,12 @@ import (
 
 var startTime time.Time
 
+// Init 初始化，保存执行的时间
 func Init() {
 	startTime = time.Now()
 }
 
+// ArraySource 开启一个协程：读取输入的数据到channel中，返回channel
 func ArraySource(a ...int) <-chan int {
 	out := make(chan int)
 	go func() {
@@ -26,6 +28,8 @@ func ArraySource(a ...int) <-chan int {
 	return out
 }
 
+// InMemSort 开启一个协程：从channel中读取数据，对数据进行排序
+// 排序后的数据传到一个新的channel中，返回channel
 func InMemSort(in <-chan int) <-chan int {
 	out := make(chan int, 1024)
 	go func() {
@@ -46,6 +50,20 @@ func InMemSort(in <-chan int) <-chan int {
 	return out
 }
 
+// MergeN 传入多个channel，递归调用，进行归并排序
+func MergeN(inputs ...<-chan int) <-chan int {
+	if len(inputs) == 1 {
+		return inputs[0]
+	}
+
+	m := len(inputs) / 2
+	return Merge(
+		MergeN(inputs[:m]...),
+		MergeN(inputs[m:]...))
+}
+
+// Merge 开启一个协程：从两个channel中读取数据
+// 把数据合并到一个新的channel中，返回channel
 func Merge(in1, in2 <-chan int) <-chan int {
 	out := make(chan int, 1024)
 	go func() {
@@ -66,6 +84,8 @@ func Merge(in1, in2 <-chan int) <-chan int {
 	return out
 }
 
+// ReaderSource 开启一个协程：从文件中读取数据到channel中，返回channel
+// chunkSize 是文件块大小
 func ReaderSource(reader io.Reader, chunkSize int) <-chan int {
 	out := make(chan int, 1024)
 	go func() {
@@ -87,6 +107,7 @@ func ReaderSource(reader io.Reader, chunkSize int) <-chan int {
 	return out
 }
 
+// WriterSink 从channel中读取数据，并写到文件中
 func WriterSink(writer io.Writer, in <-chan int) {
 	for v := range in {
 		buffer := make([]byte, 8)
@@ -95,6 +116,7 @@ func WriterSink(writer io.Writer, in <-chan int) {
 	}
 }
 
+// RandomSource 开启一个协程：生成count个随机数，并发送到一个channel中，返回channel
 func RandomSource(count int) <-chan int {
 	out := make(chan int)
 	go func() {
@@ -104,15 +126,4 @@ func RandomSource(count int) <-chan int {
 		close(out)
 	}()
 	return out
-}
-
-func MergeN(inputs ...<-chan int) <-chan int {
-	if len(inputs) == 1 {
-		return inputs[0]
-	}
-
-	m := len(inputs) / 2
-	return Merge(
-		MergeN(inputs[:m]...),
-		MergeN(inputs[m:]...))
 }

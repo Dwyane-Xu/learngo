@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"learngo/tree"
+
+	"learngo/leetcode/tree"
 )
 
 type myTreeNode struct {

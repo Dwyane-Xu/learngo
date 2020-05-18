@@ -44,5 +44,5 @@ func Sum2(start, end int64) int64 {
 
 func main() {
 	fmt.Println(timedSumFunc(Sum1)(1, 1000000000))
-	fmt.Println(timedSumFunc(Sum1)(1, 1000000000))
+	fmt.Println(timedSumFunc(Sum2)(1, 1000000000))
 }
