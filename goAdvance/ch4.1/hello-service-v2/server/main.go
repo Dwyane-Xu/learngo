@@ -5,7 +5,7 @@ import (
 	"net"
 	"net/rpc"
 
-	"gobook.examples/ch4-01-rpc-intro/hello-service-v2/api"
+	"learngo/goAdvance/ch4.1/hello-service-v2/api"
 )
 
 type HelloService struct{}

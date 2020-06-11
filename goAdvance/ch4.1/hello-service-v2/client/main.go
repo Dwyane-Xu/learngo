@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"gobook.examples/ch4-01-rpc-intro/hello-service-v2/api"
+	"learngo/goAdvance/ch4.1/hello-service-v2/api"
 )
 
 type HelloService struct{}
@@ -15,7 +15,6 @@ func (p *HelloService) Hello(request string, reply *string) error {
 }
 
 func main() {
-
 	client, err := api.DialHelloService("tcp", "localhost:1234")
 	if err != nil {
 		log.Fatal("dialing:", err)
